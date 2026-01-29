@@ -17,7 +17,7 @@
           placeholder="Buscar por nombre, categoría o entrenador"
           aria-label="Search"
           [(ngModel)]="searchTerm"
-          (keyup.enter)="onSearch()"
+          (ngModelChange)="onSearchTermChange($event)"
           name="search"
         />
         <button class="btn btn-outline-primary" type="button" (click)="onSearch()">Buscar</button>
