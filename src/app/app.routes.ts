@@ -6,6 +6,6 @@ import { UsuarioViewRouted } from './component/usuario/view-routed/usuario-view'
 export const routes: Routes = [
     { path: '', component: Home },
     { path: 'articulo', component: ArticuloPlistAdminRouted},
-    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted}
+    { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted},
     { path: 'usuario/:id', component: UsuarioViewRouted}
 ];
