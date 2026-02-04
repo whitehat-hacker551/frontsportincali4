@@ -28,6 +28,8 @@ import { NoticiaViewAdminRouted } from './component/noticia/view-admin-routed/vi
 import { FacturaViewAdminRouted } from './component/factura/view-admin-routed/factura-view';
 import { ComentarioartPlistAdminRouted } from './component/comentarioart/comentarioart-plist';
 import { ClubViewAdminRouted } from './component/club/view-admin-routed/club-view';
+import { CarritoViewAdminRouted } from './component/carrito/view-admin-routed/view-admin-routed';
+import { ComentarioartViewRouted } from './component/comentarioart/view-routed/comentarioart-view';
 
 
 export const routes: Routes = [
