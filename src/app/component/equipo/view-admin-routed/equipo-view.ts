@@ -1,10 +1,7 @@
 import { Component, signal, OnInit, inject } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
-import { HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { EquipoService } from '../../../service/equipo';
 import { IEquipo } from '../../../model/equipo';
-import { DatetimePipe } from '../../../pipe/datetime-pipe';
 import { EquipoDetailAdminUnrouted} from "../detail-admin-unrouted/equipo-detail";
 
 
