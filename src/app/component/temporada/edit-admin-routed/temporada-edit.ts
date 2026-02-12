@@ -6,6 +6,10 @@ import { ITemporada } from '../../../model/temporada';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IClub } from '../../../model/club';
+import { MatDialog } from '@angular/material/dialog';
+import { UsuarioPlistAdminUnrouted } from '../../usuario/plist-admin-unrouted/usuario-plist-admin-unrouted';
+import { ClubPlistAdminUnrouted } from '../../club/plist-admin-unrouted/club-plist-admin-unrouted';
+import { ClubService } from '../../../service/club';
 
 @Component({
     selector: 'app-temporada-edit',
@@ -18,14 +22,18 @@ export class TemporadaEditAdminRouted implements OnInit {
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private oTemporadaService = inject(TemporadaService);
+    private oClubService = inject(ClubService);
     private snackBar = inject(MatSnackBar);
+    private dialog = inject(MatDialog);
 
     temporadaForm!: FormGroup;
-    temporada = signal<ITemporada | null>(null)
     temporadaId = signal<number | null>(null);
     loading = signal<boolean>(true);
     error = signal<string | null>(null);
     submitting = signal<boolean>(false);
+    temporada = signal<ITemporada | null>(null);
+    selectedClub = signal<IClub | null>(null);
+    displayIdClub = signal<number | null>(null);
 
     ngOnInit(): void {
         this.initForm();
@@ -56,7 +64,7 @@ export class TemporadaEditAdminRouted implements OnInit {
         this.oTemporadaService.get(id).subscribe({
             next: (data: ITemporada) => {
                 this.temporada.set(data);
-                // this.loadClubes(temporada.club.id);
+                this.syncClub(data.club.id);
                 this.temporadaForm.patchValue({
                     descripcion: data.descripcion,
                     id_club: data.club.id,
@@ -106,6 +114,44 @@ export class TemporadaEditAdminRouted implements OnInit {
         });
     }
 
+    private syncClub(idClub: number): void {
+        this.oClubService.get(idClub).subscribe({
+            next: (club: IClub) => {
+                this.selectedClub.set(club);
+            },
+            error: (err: HttpErrorResponse) => {
+                console.error('Error al sincronizar club:', err);
+                this.snackBar.open('Error al cargar el club seleccionado', 'Cerrar', { duration: 3000 });
+            },
+        });
+    }
+
+    openClubFinderModal(): void {
+        const dialogRef = this.dialog.open(ClubPlistAdminUnrouted, {
+            height: '800px',
+            width: '1100px',
+            maxWidth: '95vw',
+            panelClass: 'club-dialog',
+            data: {
+            title: 'Aquí elegir club',
+            message: 'Plist finder para encontrar el club y asignarlo a la temporada',
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((club: IClub | null) => {
+            if (club) {
+            this.temporadaForm.patchValue({
+                id_club: club.id,
+            });
+            // Sincronizar explícitamente después de seleccionar desde el modal
+            this.syncClub(club.id);
+            this.snackBar.open(`Club seleccionado: ${club.nombre}`, 'Cerrar', {
+                duration: 3000,
+            });
+            }
+        });
+    }
+
     get descripcion() {
         return this.temporadaForm.get('descripcion');
     }
@@ -113,5 +159,4 @@ export class TemporadaEditAdminRouted implements OnInit {
     get id_club() {
         return this.temporadaForm.get('id_club');
     }
-
 }

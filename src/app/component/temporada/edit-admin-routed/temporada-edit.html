@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-8">
       <div class="form-card">
         <header class="mb-4">
-          <h1 class="h3 mb-0">Editar artículo</h1>
+          <h1 class="h3 mb-0">Editar Temporada</h1>
         </header>
 
         @if (loading()) {
@@ -59,24 +59,52 @@
             }
           </div>
 
-          <!-- Club -->
-          <div class="mb-4">
-            <label for="club" class="form-label">Club <span class="text-danger">*</span></label>
-            <select
-              id="club"
-              style="cursor: pointer;"
-              class="form-select"
-              [class.is-invalid]="id_club?.invalid && id_club?.touched"
-              [class.is-valid]="id_club?.valid && id_club?.touched"
-              formControlName="id_club"
-            >
-              <option [value]="id_club?.value" selected>{{ temporada()?.club?.nombre }}</option>
-            </select>
-            @if (id_club?.invalid && id_club?.touched) {
-              <div class="invalid-feedback">
-                <span>Debe seleccionar un club.</span>
+          <!-- Sección: Club -->
+          <div class="p-4 rounded mb-4" style="background-color: #e4e4e4; border-left: 4px solid #0d6efd;">
+            <!-- Club -->
+            <div class="mb-4">
+              <label for="club" class="form-label">Club <span class="text-danger">*</span></label>
+              <input
+                id="club"
+                type="text"
+                class="form-control"
+                [class.is-invalid]="id_club?.invalid && id_club?.touched"
+                [class.is-valid]="id_club?.valid && id_club?.touched"
+                [value]="selectedClub()?.nombre"
+                readonly
+              />
+              @if (id_club?.invalid && id_club?.touched) {
+                <div class="invalid-feedback">
+                  <span>Debe seleccionar un club.</span>
+                </div>
+              }
+            </div>
+
+            <!-- Buscador, ID y Descripción en una línea -->
+            <div class="d-flex gap-3 align-items-end">
+              <button type="button" class="btn btn-info" (click)="openClubFinderModal()">
+                <i class="bi bi-search me-2"></i>Buscar
+              </button>
+              <div>
+                <label for="display_id_club" class="form-label">ID Club</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="display_id_club"
+                  [value]="id_club?.value"
+                  formControlName="id_club"
+                  readonly
+                />
               </div>
-            }
+              @if (selectedClub()) {
+                <div class="grow">
+                  <label class="form-label">Dirección</label>
+                  <p class="form-control-plaintext fw-semibold mb-0">
+                    {{ selectedClub()?.direccion }}
+                  </p>
+                </div>
+              }
+            </div>
           </div>
 
           <!-- Botones -->
