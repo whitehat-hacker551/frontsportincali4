@@ -3,7 +3,7 @@
     <div class="col-12 col-lg-8">
       <div class="form-card">
         <header class="mb-4">
-          <h1 class="h3 mb-0">Editar Temporada</h1>
+          <h1 class="h3 mb-0">@if (id() && id() > 0) {Editar Temporada} @else {Nueva Temporada}</h1>
         </header>
 
         @if (loading()) {
@@ -22,17 +22,13 @@
 
         @if (!loading() && !error()) {
         <form [formGroup]="temporadaForm" (ngSubmit)="onSubmit()" novalidate>
-          <!-- ID (solo lectura) -->
-          <div class="mb-4">
-            <label for="id" class="form-label">ID de la temporada</label>
-            <input
-              type="text"
-              class="form-control"
-              id="id"
-              [value]="temporadaId()"
-              disabled
-            />
-          </div>
+          <!-- ID (solo lectura cuando exista) -->
+          @if (id() > 0) {
+            <div class="mb-4">
+              <label for="id" class="form-label">ID de la temporada</label>
+              <input type="text" class="form-control" id="id" [value]="id()" disabled />
+            </div>
+          }
 
           <!-- Descripción -->
           <div class="mb-4">
@@ -112,17 +108,13 @@
             <a [routerLink]="['/temporada']" class="btn btn-outline-secondary">
               <i class="bi bi-arrow-left me-2"></i>Cancelar
             </a>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              [disabled]="submitting() || temporadaForm.invalid"
-            >
+            <button type="submit" class="btn btn-primary" [disabled]="submitting() || temporadaForm.invalid">
               @if (submitting()) {
                 <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               } @else {
                 <i class="bi bi-check-circle me-2"></i>
               }
-              Guardar Cambios
+              @if (id() && id() > 0) {Guardar Cambios} @else {Crear}
             </button>
           </div>
         </form>
