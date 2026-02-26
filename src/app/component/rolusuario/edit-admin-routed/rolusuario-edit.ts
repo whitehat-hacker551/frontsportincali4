@@ -1,99 +1,65 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RolusuarioService } from '../../../service/rolusuario';
 import { IRolusuario } from '../../../model/rolusuario';
-import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-// import { MatSnackBar } from '@angular/material/snack-bar';
+import { RolusuarioFormAdminUnrouted } from '../form-unrouted/rolusuario-form';
 
 @Component({
   selector: 'app-rolusuario-edit',
-  imports: [ReactiveFormsModule, RouterLink, CommonModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, RolusuarioFormAdminUnrouted],
   templateUrl: './rolusuario-edit.html',
   styleUrl: './rolusuario-edit.css',
 })
 export class RolusuarioEditAdminRouted implements OnInit {
-  private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private oRolusuarioService = inject(RolusuarioService);
-  // private snackBar = inject(MatSnackBar);
+  private snackBar = inject(MatSnackBar);
 
-  rolusuarioForm!: FormGroup;
-  rolusuarioId: number | null = null;
-  loading = signal<boolean>(true);
+  id = signal<number>(0);
+  loading = signal(true);
   error = signal<string | null>(null);
-  submitting = signal<boolean>(false);
+  rolusuario = signal<IRolusuario | null>(null);
 
   ngOnInit(): void {
-    this.inicializarFormulario();
-
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.rolusuarioId = +id;
-      this.cargarRolusuario(+id);
-    } else {
-      this.loading.set(false);
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (!idParam) {
       this.error.set('ID de rol de usuario no válido');
-    }
-  }
-
-  inicializarFormulario(): void {
-    this.rolusuarioForm = this.fb.group({
-      descripcion: ['', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(255)
-      ]]
-    });
-  }
-
-  cargarRolusuario(id: number): void {
-    this.oRolusuarioService.get(id).subscribe({
-      next: (rolusuario: IRolusuario) => {
-        this.rolusuarioForm.patchValue({
-          descripcion: rolusuario.descripcion
-        });
-        this.loading.set(false);
-      },
-      error: (err: HttpErrorResponse) => {
-        this.error.set('Error al cargar el rol de usuario');
-        this.loading.set(false);
-        console.error(err);
-      }
-    });
-  }
-
-  enviarFormulario(): void {
-    if (!this.rolusuarioForm.valid || !this.rolusuarioId) {
-      this.rolusuarioForm.markAllAsTouched();
+      this.loading.set(false);
       return;
     }
+    const nid = Number(idParam);
+    if (isNaN(nid)) {
+      this.error.set('ID no válido');
+      this.loading.set(false);
+      return;
+    }
+    this.id.set(nid);
+    this.loadRolusuario(nid);
+  }
 
-    this.submitting.set(true);
-
-    const payload: any = {
-      id: this.rolusuarioId,
-      descripcion: this.rolusuarioForm.value.descripcion
-    };
-
-    this.oRolusuarioService.update(payload).subscribe({
-      next: () => {
-        this.submitting.set(false);
-        // this.snackBar.open('Rol de usuario actualizado correctamente', 'Cerrar', { duration: 4000 });
-        this.router.navigate(['/rolusuario']);
+  private loadRolusuario(id: number): void {
+    this.oRolusuarioService.get(id).subscribe({
+      next: (r: IRolusuario) => {
+        this.rolusuario.set(r);
+        this.loading.set(false);
       },
-      error: (err: HttpErrorResponse) => {
-        this.submitting.set(false);
-        this.error.set('Error al actualizar el rol de usuario');
-        // this.snackBar.open('Error al actualizar el rol de usuario', 'Cerrar', { duration: 4000 });
+      error: (err) => {
         console.error(err);
-      }
+        this.error.set('Error cargando el rol de usuario');
+        this.loading.set(false);
+      },
     });
   }
 
-  get descripcion() {
-    return this.rolusuarioForm.get('descripcion');
+  onFormSuccess(): void {
+    this.router.navigate(['/rolusuario']);
+  }
+
+  onFormCancel(): void {
+    this.router.navigate(['/rolusuario']);
   }
 }

@@ -55,6 +55,7 @@ import { CuotaViewAdminRouted } from './component/cuota/view-admin-routed/cuota-
 import { TipousuarioViewAdminRouted } from './component/tipousario/view-admin-routed/tipousuario-view';
 import { CarritoViewAdminRouted } from './component/carrito/view-admin-routed/view-admin-routed';
 import { RolusuarioViewAdminRouted } from './component/rolusuario/view-admin-routed/rolusuario-view';
+import { RolusuarioNewAdminRouted } from './component/rolusuario/new-admin-routed/rolusuario-new';
 import { CategoriaViewAdminRouted } from './component/categoria/view-admin-routed/categoria-view';
 import { CategoriaEditAdminRouted } from './component/categoria/edit-admin-routed/categoria-edit';
 import { CategoriaNewAdminRouted } from './component/categoria/new-admin-routed/categoria-new';
@@ -145,6 +146,7 @@ export const routes: Routes = [
   { path: 'compra/delete/:id', component: CompraDeleteAdminRouted },
   { path: 'compra/edit/:id', component: CompraEditAdminRouted },
   { path: 'rolusuario', component: RolusuarioPlist },
+  { path: 'rolusuario/new', component: RolusuarioNewAdminRouted },
   { path: 'rolusuario/view/:id', component: RolusuarioViewAdminRouted },
   { path: 'rolusuario/delete/:id', component: RolusuarioDeleteAdminRouted },
   { path: 'rolusuario/edit/:id', component: RolusuarioEditAdminRouted },

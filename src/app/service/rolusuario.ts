@@ -62,4 +62,8 @@ export class RolusuarioService {
   update(rolusuario: Partial<IRolusuario>): Observable<IRolusuario> {
     return this.oHttp.put<IRolusuario>(serverURL + '/rolusuario', rolusuario);
   }
+
+  create(rolusuario: Partial<IRolusuario>): Observable<number> {
+    return this.oHttp.post<number>(serverURL + '/rolusuario', rolusuario);
+  }
 }

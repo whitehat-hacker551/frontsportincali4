@@ -29,55 +29,7 @@
             </div>
           }
           @if (!loading() && !error()) {
-            <form [formGroup]="rolusuarioForm" (ngSubmit)="enviarFormulario()" novalidate>
-              <!-- Descripción -->
-              <div class="mb-4">
-                <label for="descripcion" class="form-label fw-semibold">
-                  Descripción <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="text"
-                  class="form-control"
-                  [class.is-invalid]="descripcion?.invalid && descripcion?.touched"
-                  [class.is-valid]="descripcion?.valid && descripcion?.touched"
-                  id="descripcion"
-                  formControlName="descripcion"
-                  placeholder="Introduce la descripción del rol"
-                />
-                @if (descripcion?.invalid && descripcion?.touched) {
-                  <div class="invalid-feedback">
-                    @if (descripcion?.errors?.['required']) {
-                      <span>La descripción es obligatoria.</span>
-                    }
-                    @if (descripcion?.errors?.['minlength']) {
-                      <span>La descripción debe tener al menos 3 caracteres.</span>
-                    }
-                    @if (descripcion?.errors?.['maxlength']) {
-                      <span>La descripción no puede superar 255 caracteres.</span>
-                    }
-                  </div>
-                }
-              </div>
-
-              <!-- Botones -->
-              <div class="d-flex gap-2 justify-content-end mt-4">
-                <a [routerLink]="['/rolusuario']" class="btn btn-secondary">
-                  <i class="bi bi-x-circle me-1"></i>Cancelar
-                </a>
-                <button
-                  type="submit"
-                  class="btn btn-warning"
-                  [disabled]="submitting() || rolusuarioForm.invalid"
-                >
-                  @if (submitting()) {
-                    <span class="spinner-border spinner-border-sm me-1" role="status"></span>
-                    Guardando...
-                  } @else {
-                    <i class="bi bi-save me-1"></i>Guardar Cambios
-                  }
-                </button>
-              </div>
-            </form>
+            <app-rolusuario-form-unrouted [rolusuario]="rolusuario()" mode="edit" (formSuccess)="onFormSuccess()" (formCancel)="onFormCancel()"></app-rolusuario-form-unrouted>
           }
         </div>
       </div>
