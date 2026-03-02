@@ -1,6 +1,10 @@
 <div class="container my-2">
-  <div class="d-flex justify-content-center my-3">
-        <h1>Partidos</h1>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="mb-0">Partidos</h1>
+    <a [routerLink]="['/partido/new']" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Crear Partido
+    </a>
   </div>
-  <app-partido-plist-admin-unrouted [liga]="id_liga"></app-partido-plist-admin-unrouted>
+  <app-partido-plist-admin-unrouted [liga]="id_liga">
+  </app-partido-plist-admin-unrouted>
 </div>

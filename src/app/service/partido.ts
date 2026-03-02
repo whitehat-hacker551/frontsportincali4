@@ -64,6 +64,11 @@ export class PartidoService {
     return this.oHttp.put<number>(serverURL + '/partido', body);
   }
 
+  create(partido: Partial<IPartido>): Observable<number> {
+    const body = this.sanitizer.sanitize(partido, { booleanFields: ['local'], nestedIdFields: ['liga'] });
+    return this.oHttp.post<number>(serverURL + '/partido', body);
+  }
+
   delete(id: number): Observable<number> {
     return this.oHttp.delete<number>(serverURL + '/partido/' + id);
   }
