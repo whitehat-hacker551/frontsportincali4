@@ -1,82 +1,48 @@
 <ul class="nav flex-column sidebar-nav px-2">
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-      <i class="bi bi-house-fill"></i>
-      <span>Inicio</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/club']" routerLinkActive="active">
-      <i class="bi bi-building"></i>
-      <span>Clubes</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/noticia']" routerLinkActive="active">
-      <i class="bi bi-newspaper"></i>
-      <span>Noticias</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/partido']" routerLinkActive="active">
-      <i class="bi bi-play-fill"></i>
-      <span>Partidos</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/equipo']" routerLinkActive="active">
-      <i class="bi bi-people-fill"></i>
-      <span>Equipos</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/liga']" routerLinkActive="active">
-      <i class="bi bi-trophy"></i>
-      <span>Ligas</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/jugador']" routerLinkActive="active">
-      <i class="bi bi-person-fill"></i>
-      <span>Jugadores</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/usuario']" routerLinkActive="active">
-      <i class="bi bi-people"></i>
-      <span>Usuarios</span>
-    </a>
-  </li>
+  @for (item of menuItems(); track item.route) {
+    @if (!item.children || item.children.length === 0) {
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          [routerLink]="[item.route]"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+        >
+          <i class="bi" [ngClass]="'bi-' + item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    }
 
-  <li class="nav-item mt-2">
-    <h6 class="sidebar-heading px-2">Gestión</h6>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/temporada']" routerLinkActive="active">
-      <i class="bi bi-calendar"></i>
-      <span>Temporadas</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/categoria']" routerLinkActive="active">
-      <i class="bi bi-tags"></i>
-      <span>Categorías</span>
-    </a>
-  </li>
+    @if (item.children && item.children.length > 0) {
+      <li class="nav-item mt-2">
+        <h6 class="sidebar-heading px-2">{{ item.label }}</h6>
+      </li>
 
-  <li class="nav-item mt-2">
-    <h6 class="sidebar-heading px-2">Tienda</h6>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/articulo']" routerLinkActive="active">
-      <i class="bi bi-bag-fill"></i>
-      <span>Artículos</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [routerLink]="['/compra']" routerLinkActive="active">
-      <i class="bi bi-cart-fill"></i>
-      <span>Compras</span>
-    </a>
-  </li>
+      @for (child of item.children; track child.route) {
+        @if (!child.children || child.children.length === 0) {
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="[child.route]" routerLinkActive="active">
+              <i class="bi" [ngClass]="'bi-' + child.icon"></i>
+              <span>{{ child.label }}</span>
+            </a>
+          </li>
+        }
+
+        @if (child.children && child.children.length > 0) {
+          <li class="nav-item px-2">
+            <h6 class="sidebar-subheading">{{ child.label }}</h6>
+          </li>
+          @for (sub of child.children; track sub.route) {
+            <li class="nav-item">
+              <a class="nav-link" [routerLink]="[sub.route]" routerLinkActive="active">
+                <i class="bi" [ngClass]="'bi-' + sub.icon"></i>
+                <span>{{ sub.label }}</span>
+              </a>
+            </li>
+          }
+        }
+      }
+    }
+  }
 </ul>
