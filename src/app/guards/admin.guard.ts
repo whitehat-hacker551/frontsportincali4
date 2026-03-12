@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from "@angular/router";
+import { Observable, of } from "rxjs";
 import { SessionService } from "../service/session";
 
 @Injectable({
@@ -12,20 +12,28 @@ export class AdminGuard implements CanActivate {
     constructor(private oSessionService: SessionService,
         private oRouter: Router) { }
 
-    canActivate(): Observable<boolean> {
-        if (this.oSessionService.isSessionActive() && this.oSessionService.isAdmin()) {
-            return new Observable<boolean>(observer => {
-                observer.next(true);
-                observer.complete();
-            });
-        } else {
-            // if not logged in or not an admin, redirect to login
-            this.oRouter.navigate(['/login']);
-            return new Observable<boolean>(observer => {
-                observer.next(false);
-                observer.complete();
-            });
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+        if (!this.oSessionService.isSessionActive()) {
+            return of(this.oRouter.createUrlTree(['/login']));
         }
+
+        // full administrators always allowed
+        if (this.oSessionService.isAdmin()) {
+            return of(true);
+        }
+
+        // team/club admins are allowed only when the route explicitly opts in
+        const allowClub = route.data?.['allowClubAdmin'] === true;
+        if (allowClub && this.oSessionService.isClubAdmin()) {
+            return of(true);
+        }
+
+        // Important: avoid redirecting to '/' because it is also guarded and can loop.
+        if (this.oSessionService.isClubAdmin()) {
+            return of(this.oRouter.createUrlTree(['/temporada']));
+        }
+
+        return of(this.oRouter.createUrlTree(['/login']));
     }
 
 }

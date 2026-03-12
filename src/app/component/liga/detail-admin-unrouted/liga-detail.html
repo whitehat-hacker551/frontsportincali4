@@ -85,6 +85,16 @@
                   Sin equipo
                 }
               </div>
+              <div class="col-5 text-muted small text-uppercase">Club</div>
+              <div class="col-7 fw-semibold small">
+                @if (oLiga()?.equipo?.categoria?.temporada?.club?.nombre) {
+                  <a [routerLink]="['/club/view', oLiga()?.equipo?.categoria?.temporada?.club?.id]">
+                    {{ oLiga()?.equipo?.categoria?.temporada?.club?.nombre }} ({{ oLiga()?.equipo?.categoria?.temporada?.club?.id }})
+                  </a>
+                } @else {
+                  Sin club
+                }
+              </div>
             </div>
           </div>
         </div>

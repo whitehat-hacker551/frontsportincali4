@@ -84,6 +84,16 @@
               Sin entrenador
               }
             </div>
+            <div class="col-5 text-muted small text-uppercase">Club de la liga</div>
+            <div class="col-7 fw-semibold small">
+              @if (oEquipo()?.categoria?.temporada?.club?.nombre) {
+              <a [routerLink]="['/club/view', oEquipo()?.categoria?.temporada?.club?.id]">
+                {{ oEquipo()?.categoria?.temporada?.club?.nombre }} ({{ oEquipo()?.categoria?.temporada?.club?.id }})
+              </a>
+              } @else {
+              -
+              }
+            </div>
           </div>
         </div>
       </div>

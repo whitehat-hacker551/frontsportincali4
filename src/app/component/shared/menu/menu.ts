@@ -1,7 +1,9 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, signal, WritableSignal } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { IJWT } from '../../../model/token';
 import { SessionService } from '../../../service/session';
+import { filter } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-menu',
@@ -15,16 +17,20 @@ export class Menu {
   isSessionActive: WritableSignal<boolean> = signal(false);
   oTokenJWT: IJWT | null = null;
   userName: WritableSignal<string> = signal('');
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private oRouter: Router,
     private oSessionService: SessionService,
   ) {
-    this.oRouter.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.activeRoute = event.url;
-      }
-    });
+    this.oRouter.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef),
+      )
+      .subscribe((event) => {
+        this.activeRoute = event.urlAfterRedirects;
+      });
     this.isSessionActive.set(this.oSessionService.isSessionActive());
     if (this.isSessionActive()) {
       this.oTokenJWT = this.oSessionService.parseJWT(this.oSessionService.getToken()!);

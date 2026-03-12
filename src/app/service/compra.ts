@@ -5,12 +5,17 @@ import { IPage } from '../model/plist';
 import { serverURL } from '../environment/environment';
 import { ICompra } from '../model/compra';
 import { PayloadSanitizerService } from './payload-sanitizer';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompraService {
-  constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {}
+  constructor(
+    private oHttp: HttpClient,
+    private sanitizer: PayloadSanitizerService,
+    private security: SecurityService,
+  ) {}
 
   getPage(
     page: number,
@@ -41,14 +46,17 @@ export class CompraService {
     return this.oHttp.get<number>(serverURL + '/compra/count');
   }
   create(compra: Partial<ICompra>): Observable<number> {
+      this.security.forbidClubAdminActions();
       return this.oHttp.post<number>(serverURL + '/compra', compra);
     }
 
   delete(id: number): Observable<number> {
+    this.security.forbidClubAdminActions();
     return this.oHttp.delete<number>(serverURL + '/compra/' + id);
   }
 
   update(compra: Partial<ICompra>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(compra, { nestedIdFields: ['articulo', 'factura'] });
     return this.oHttp.put<number>(serverURL + '/compra', body);
   }

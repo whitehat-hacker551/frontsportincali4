@@ -5,12 +5,17 @@ import { ITipoarticulo } from '../model/tipoarticulo';
 import { serverURL } from '../environment/environment';
 import { PayloadSanitizerService } from './payload-sanitizer';
 import { Observable } from 'rxjs';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TipoarticuloService {
-  constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {}
+  constructor(
+    private oHttp: HttpClient,
+    private sanitizer: PayloadSanitizerService,
+    private security: SecurityService,
+  ) {}
 
   getPage(
     page: number,
@@ -20,6 +25,7 @@ export class TipoarticuloService {
     descripcion: string = '',
     id_club: number = 0,
   ): Observable<IPage<ITipoarticulo>> {
+    id_club = this.security.clubFilter(id_club);
     if (order === '') {
       order = 'id';
     }
@@ -52,11 +58,13 @@ export class TipoarticuloService {
   }
 
    update(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
-  const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
-  return this.oHttp.put<number>(`${serverURL}/tipoarticulo`, body);
+    this.security.forbidClubAdminActions();
+    const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
+    return this.oHttp.put<number>(`${serverURL}/tipoarticulo`, body);
 }
 
   create(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
     return this.oHttp.post<number>(`${serverURL}/tipoarticulo`, body);
   }

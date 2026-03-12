@@ -105,6 +105,19 @@
               Sin equipo
               }
             </div>
+            <div class="col-5 text-muted small text-uppercase">Club</div>
+            <div class="col-7 fw-semibold small">
+              @if (jugador()?.equipo?.categoria?.temporada?.club?.nombre) {
+              <a [routerLink]="['/club/view', jugador()?.equipo?.categoria?.temporada?.club?.id]">
+                {{ jugador()?.equipo?.categoria?.temporada?.club?.nombre }}
+              </a>
+              <div class="text-muted" style="font-size: 0.75rem;">
+                ID: {{ jugador()?.equipo?.categoria?.temporada?.club?.id }}
+              </div>
+              } @else {
+              Sin club
+              }
+            </div>
           </div>
         </div>
       </div>

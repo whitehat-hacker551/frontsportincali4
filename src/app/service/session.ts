@@ -55,12 +55,24 @@ export class SessionService {
     return false;
   }
 
+  /**
+   * Tipo 2: administrador de equipo/club.
+   * alias más explícito para la seguridad que se pide en los requisitos.
+   */
   isClubAdmin(): boolean {
     if (this.isSessionActive()) {
       const oJWT: IJWT = this.parseJWT(this.getToken()!);
       return oJWT.usertype === 2;
     }
     return false;
+  }
+
+  /**
+   * Alias semántico para que el código sea legible en servicios.
+   * Un "team admin" puede ver y gestionar únicamente recursos de su club.
+   */
+  isTeamAdmin(): boolean {
+    return this.isClubAdmin();
   }
 
   isUser(): boolean {

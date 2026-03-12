@@ -5,15 +5,21 @@ import { PayloadSanitizerService } from './payload-sanitizer';
 import { IPage } from '../model/plist';
 import { Observable } from 'rxjs';
 import { INoticia } from '../model/noticia';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NoticiaService {
-  constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {}
+  constructor(
+    private oHttp: HttpClient,
+    private sanitizer: PayloadSanitizerService,
+    private security: SecurityService,
+  ) {}
 
 
   update(noticia: any): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.put<number>(serverURL + '/noticia', body);
   }
@@ -32,6 +38,8 @@ export class NoticiaService {
     if (direction === '') {
       direction = 'asc';
     }
+
+    id_club = this.security.clubFilter(id_club);
 
     // Filtro por club.id
     if (id_club > 0) {
@@ -61,6 +69,7 @@ export class NoticiaService {
 
   //create
   create(noticia: INoticia): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.post<number>(serverURL + '/noticia', body);
   }
