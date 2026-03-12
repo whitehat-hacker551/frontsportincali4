@@ -61,7 +61,13 @@ export class TemporadaService {
   }
 
   update(temporada: Partial<ITemporada> & { club?: Partial<IClub> }): Observable<ITemporada> {
-    this.security.forbidClubAdminActions();
+    if (this.security.isClubAdmin()) {
+      const myClubId = this.security.getClubId();
+      temporada.club = { id: myClubId } as any;
+      this.security.ensureClubOwnership(myClubId);
+    } else {
+      this.security.ensureClubOwnership(temporada.club?.id);
+    }
     const body = this.sanitizer.sanitize(temporada, { nestedIdFields: ['club'], removeFields: ['categorias'] });
     return this.oHttp.put<ITemporada>(`${serverURL}/temporada`, body);
   }

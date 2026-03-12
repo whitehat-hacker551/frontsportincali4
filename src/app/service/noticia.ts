@@ -19,7 +19,13 @@ export class NoticiaService {
 
 
   update(noticia: any): Observable<number> {
-    this.security.forbidClubAdminActions();
+    if (this.security.isClubAdmin()) {
+      const myClubId = this.security.getClubId();
+      noticia.club = { id: myClubId };
+      this.security.ensureClubOwnership(myClubId);
+    } else {
+      this.security.ensureClubOwnership(noticia.club?.id);
+    }
     const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.put<number>(serverURL + '/noticia', body);
   }
@@ -69,7 +75,13 @@ export class NoticiaService {
 
   //create
   create(noticia: INoticia): Observable<number> {
-    this.security.forbidClubAdminActions();
+    if (this.security.isClubAdmin()) {
+      const myClubId = this.security.getClubId();
+      noticia.club = { id: myClubId } as any;
+      this.security.ensureClubOwnership(myClubId);
+    } else {
+      this.security.ensureClubOwnership(noticia.club?.id);
+    }
     const body = this.sanitizer.sanitize(noticia, { nestedIdFields: ['club'], removeFields: ['comentarios', 'puntuaciones'] });
     return this.oHttp.post<number>(serverURL + '/noticia', body);
   }

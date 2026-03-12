@@ -5,12 +5,17 @@ import { IPage } from '../model/plist';
 import { HttpClient } from '@angular/common/http';
 import { serverURL } from '../environment/environment';
 import { PayloadSanitizerService } from './payload-sanitizer';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PuntuacionService {
-  constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {}
+  constructor(
+    private oHttp: HttpClient,
+    private sanitizer: PayloadSanitizerService,
+    private security: SecurityService,
+  ) {}
 
   getPage(
     page: number,
@@ -52,11 +57,13 @@ export class PuntuacionService {
   }
 
   create(puntuacion: Partial<IPuntuacion>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(puntuacion, { nestedIdFields: ['noticia', 'usuario'] });
     return this.oHttp.post<number>(serverURL + '/puntuacion', body);
   }
 
   update(puntuacion: Partial<IPuntuacion>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(puntuacion, { nestedIdFields: ['noticia', 'usuario'] });
     return this.oHttp.put<number>(serverURL + '/puntuacion', body);
   }
@@ -82,6 +89,7 @@ export class PuntuacionService {
   }
 
   delete(id: number): Observable<number> {
+    this.security.forbidClubAdminActions();
     return this.oHttp.delete<number>(serverURL + '/puntuacion/' + id);
   }
 }

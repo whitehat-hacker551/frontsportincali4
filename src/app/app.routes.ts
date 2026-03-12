@@ -119,48 +119,48 @@ const protectedRoutes: Routes = [
   { path: 'usuario/edit/:id', component: UsuarioEditAdminRouted },
   { path: 'temporada', component: TemporadaPlist, data: { allowClubAdmin: true } },
   { path: 'temporada/club/:id_club', component: TemporadaPlist, data: { allowClubAdmin: true } },
-  { path: 'temporada/edit/:id', component: TemporadaEditAdminRouted },
+  { path: 'temporada/edit/:id', component: TemporadaEditAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'temporada/view/:id', component: TemporadaViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'temporada/delete/:id', component: TemporadaDeleteAdminRouted },
+  { path: 'temporada/delete/:id', component: TemporadaDeleteAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'temporada/new', component: TemporadaNewAdminRouted },
+  { path: 'temporada/new', component: TemporadaNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'liga', component: LigaPlistAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'liga/new', component: LigaNewAdminRouted },
+  { path: 'liga/new', component: LigaNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'liga/view/:id', component: LigaViewRouted, data: { allowClubAdmin: true } },
-  { path: 'liga/delete/:id', component: LigaDeleteAdminRouted },
+  { path: 'liga/delete/:id', component: LigaDeleteAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'liga/edit/:id', component: LigaEditAdminRouted },
+  { path: 'liga/edit/:id', component: LigaEditAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'liga/equipo/:id_equipo', component: LigaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'articulo', component: ArticuloPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'articulo/tipoarticulo/:id_tipoarticulo', component: ArticuloPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'usuario/:id', component: UsuarioViewRouted },
-  { path: 'articulo/new', component: ArticuloNewAdminRouted },
+  { path: 'articulo/new', component: ArticuloNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'articulo/:tipoarticulo', component: ArticuloPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'articulo/view/:id', component: ArticuloViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'articulo/delete/:id', component: ArticuloDeleteAdminRouted },
+  { path: 'articulo/delete/:id', component: ArticuloDeleteAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'articulo/edit/:id', component: ArticuloEditAdminRouted },
+  { path: 'articulo/edit/:id', component: ArticuloEditAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'categoria', component: CategoriaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'categoria/temporada/:id_temporada', component: CategoriaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'categoria/view/:id', component: CategoriaViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'categoria/edit/:id', component: CategoriaEditAdminRouted },
+  { path: 'categoria/edit/:id', component: CategoriaEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'categoria/new', component: CategoriaNewAdminRouted },
+  { path: 'categoria/new', component: CategoriaNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'partido', component: PartidoPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'partido/liga/:id_liga', component: PartidoPlistAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'partido/new', component: PartidoNewAdminRouted },
+  { path: 'partido/new', component: PartidoNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'partido/view/:id', component: PartidoViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'partido/edit/:id', component: PartidoEditAdminRouted },
+  { path: 'partido/edit/:id', component: PartidoEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'partido/delete/:id', component: PartidoDeleteAdminRouted },
+  { path: 'partido/delete/:id', component: PartidoDeleteAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'factura', component: FacturaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'factura/:usuario', component: FacturaPlistAdminRouted, data: { allowClubAdmin: true } },
@@ -184,9 +184,9 @@ const protectedRoutes: Routes = [
   { path: 'tipoarticulo', component: TipoarticuloPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'tipoarticulo/club/:id_club', component: TipoarticuloPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'tipoarticulo/view/:id', component: TipoarticuloViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'tipoarticulo/edit/:id', component: TipoarticuloEditAdminRouted },
+  { path: 'tipoarticulo/edit/:id', component: TipoarticuloEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'tipoarticulo/new', component: TipoarticuloNewAdminRouted },
+  { path: 'tipoarticulo/new', component: TipoarticuloNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'jugador', component: JugadorPlist, data: { allowClubAdmin: true } },
   { path: 'jugador/new', component: JugadorNewAdminRouted, data: { allowClubAdmin: true } },
@@ -195,13 +195,13 @@ const protectedRoutes: Routes = [
   { path: 'jugador/view/:id', component: JugadorViewRouted, data: { allowClubAdmin: true } },
   { path: 'jugador/edit/:id', component: JugadorEditAdminRouted, data: { allowClubAdmin: true } },
   { path: 'jugador/delete/:id', component: JugadorDeleteAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'tipoarticulo/delete/:id', component: TipoarticuloDeleteAdminRouted },
+  { path: 'tipoarticulo/delete/:id', component: TipoarticuloDeleteAdminRouted, data: { allowClubAdmin: true } },
   { path: 'noticia', component: NoticiaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'noticia/club/:id_club', component: NoticiaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'noticia/view/:id', component: NoticiaViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'noticia/edit/:id', component: NoticiaEditAdminRouted },
+  { path: 'noticia/edit/:id', component: NoticiaEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'noticia/new', component: NoticiaNewAdminRouted },
+  { path: 'noticia/new', component: NoticiaNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'club/plist', component: ClubPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'club', component: ClubPlistAdminRouted, data: { allowClubAdmin: true } },
@@ -210,24 +210,24 @@ const protectedRoutes: Routes = [
   { path: 'club/delete/:id', component: ClubDeleteAdminRouted },
   { path: 'club/edit/:id', component: ClubEditAdminRouted },
   { path: 'cuota', component: CuotaPlistAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'cuota/new', component: CuotaNewAdminRouted },
+  { path: 'cuota/new', component: CuotaNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'cuota/equipo/:id_equipo', component: CuotaPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'cuota/view/:id', component: CuotaViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'cuota/edit/:id', component: CuotaEditAdminRouted },
+  { path: 'cuota/edit/:id', component: CuotaEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'cuota/delete/:id', component: CuotaDeleteAdminRouted },
+  { path: 'cuota/delete/:id', component: CuotaDeleteAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'tipousuario', component: TipousuarioPlistAdminRouted },
   { path: 'tipousuario/view/:id', component: TipousuarioViewAdminRouted },
   { path: 'equipo', component: PlistEquipo, data: { allowClubAdmin: true } },
   { path: 'equipo/categoria/:id_categoria', component: PlistEquipo, data: { allowClubAdmin: true } },
-  { path: 'equipo/new', component: EquipoNewAdminRouted },
+  { path: 'equipo/new', component: EquipoNewAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'equipo/edit/:id', component: EquipoEditAdminRouted },
+  { path: 'equipo/edit/:id', component: EquipoEditAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'equipo/view/:id', component: EquipoViewRouted, data: { allowClubAdmin: true } },
-  { path: 'equipo/delete/:id', component: EquipoDeleteAdminRouted },
+  { path: 'equipo/delete/:id', component: EquipoDeleteAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'equipo/usuario/:id_usuario', component: PlistEquipo },
   { path: 'carrito/new', component: CarritoNewAdminRouted },
@@ -247,16 +247,16 @@ const protectedRoutes: Routes = [
   { path: 'comentario/delete/:id', component: ComentarioDeleteAdminRouted },
 
   { path: 'pago', component: PagoPlistComponent, data: { allowClubAdmin: true } },
-  { path: 'pago/new', component: PagoNewAdminRouted },
+  { path: 'pago/new', component: PagoNewAdminRouted, data: { allowClubAdmin: true } },
 
   { path: 'pago/cuota/:id_cuota', component: PagoPlistComponent, data: { allowClubAdmin: true } },
   { path: 'pago/jugador/:id_jugador', component: PagoPlistComponent, data: { allowClubAdmin: true } },
   { path: 'pago/view/:id', component: PagoViewAdminRouted, data: { allowClubAdmin: true } },
-  { path: 'pago/edit/:id', component: PagoEditAdminRouted },
+  { path: 'pago/edit/:id', component: PagoEditAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'pago/delete/:id', component: PagoDeleteAdminRouted },
+  { path: 'pago/delete/:id', component: PagoDeleteAdminRouted, data: { allowClubAdmin: true } },
 
-  { path: 'categoria/delete/:id', component: CategoriaDeleteAdminRouted },
+  { path: 'categoria/delete/:id', component: CategoriaDeleteAdminRouted, data: { allowClubAdmin: true } },
   { path: 'puntuacion', component: PuntuacionPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'puntuacion/noticia/:id_noticia', component: PuntuacionPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'puntuacion/usuario/:id_usuario', component: PuntuacionPlistAdminRouted, data: { allowClubAdmin: true } },
@@ -264,11 +264,11 @@ const protectedRoutes: Routes = [
   { path: 'puntuacion/view/:id', component: PuntuacionViewRouted, data: { allowClubAdmin: true } },
   { path: 'puntuacion/edit/:id', component: PuntuacionEditAdminRouted },
   { path: 'puntuacion/delete/:id', component: PuntuacionDeleteAdminRouted },
-  { path: 'comentarioart', component: ComentarioartPlistAdminRouted },
+  { path: 'comentarioart', component: ComentarioartPlistAdminRouted, data: { allowClubAdmin: true } },
   { path: 'comentarioart/new', component: ComentarioartNewAdminRouted },
-  { path: 'comentarioart/articulo/:id_articulo', component: ComentarioartPlistAdminRouted },
-  { path: 'comentarioart/usuario/:id_usuario', component: ComentarioartPlistAdminRouted },
-  { path: 'comentarioart/view/:id', component: ComentarioartViewRouted },
+  { path: 'comentarioart/articulo/:id_articulo', component: ComentarioartPlistAdminRouted, data: { allowClubAdmin: true } },
+  { path: 'comentarioart/usuario/:id_usuario', component: ComentarioartPlistAdminRouted, data: { allowClubAdmin: true } },
+  { path: 'comentarioart/view/:id', component: ComentarioartViewRouted, data: { allowClubAdmin: true } },
   { path: 'comentarioart/edit/:id', component: ComentarioartEditAdminRouted },
   { path: 'carrito/delete/:id', component: CarritoDeleteAdminRouted },
   { path: 'comentarioart/delete/:id', component: ComentarioartDeleteAdminRouted },

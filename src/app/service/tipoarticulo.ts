@@ -58,13 +58,25 @@ export class TipoarticuloService {
   }
 
    update(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
-    this.security.forbidClubAdminActions();
+    if (this.security.isClubAdmin()) {
+      const myClubId = this.security.getClubId();
+      tipoarticulo.club = { id: myClubId } as any;
+      this.security.ensureClubOwnership(myClubId);
+    } else {
+      this.security.ensureClubOwnership(tipoarticulo.club?.id);
+    }
     const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
     return this.oHttp.put<number>(`${serverURL}/tipoarticulo`, body);
 }
 
   create(tipoarticulo: Partial<ITipoarticulo>): Observable<number> {
-    this.security.forbidClubAdminActions();
+    if (this.security.isClubAdmin()) {
+      const myClubId = this.security.getClubId();
+      tipoarticulo.club = { id: myClubId } as any;
+      this.security.ensureClubOwnership(myClubId);
+    } else {
+      this.security.ensureClubOwnership(tipoarticulo.club?.id);
+    }
     const body = this.sanitizer.sanitize(tipoarticulo, { nestedIdFields: ['club'], removeFields: ['articulos'] });
     return this.oHttp.post<number>(`${serverURL}/tipoarticulo`, body);
   }

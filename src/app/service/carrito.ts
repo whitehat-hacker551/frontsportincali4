@@ -5,12 +5,17 @@ import { serverURL } from '../environment/environment';
 import { PayloadSanitizerService } from './payload-sanitizer';
 import { IPage } from '../model/plist';
 import { ICarrito } from '../model/carrito';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CarritoService {
-  constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {}
+  constructor(
+    private oHttp: HttpClient,
+    private sanitizer: PayloadSanitizerService,
+    private security: SecurityService,
+  ) {}
 
   getPage(
     page: number,
@@ -60,16 +65,19 @@ export class CarritoService {
   }
 
   update(carrito: Partial<ICarrito>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(carrito, { nestedIdFields: ['articulo', 'usuario'] });
     return this.oHttp.put<number>(this.carritoURL, body);
   }
 
   create(carrito: Partial<ICarrito>): Observable<number> {
+    this.security.forbidClubAdminActions();
     const body = this.sanitizer.sanitize(carrito, { nestedIdFields: ['articulo', 'usuario'] });
     return this.oHttp.post<number>(this.carritoURL, body);
   }
 
   delete(id: number) {
+    this.security.forbidClubAdminActions();
     return this.oHttp.delete<number>(`${this.carritoURL}/${id}`);
   }
 }

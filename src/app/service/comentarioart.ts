@@ -5,13 +5,18 @@ import { IComentarioart } from '../model/comentarioart';
 import { IPage } from '../model/plist';
 import { serverURL } from '../environment/environment';
 import { PayloadSanitizerService } from './payload-sanitizer';
+import { SecurityService } from './security.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ComentarioartService {
 
-    constructor(private oHttp: HttpClient, private sanitizer: PayloadSanitizerService) {        
+    constructor(
+        private oHttp: HttpClient,
+        private sanitizer: PayloadSanitizerService,
+        private security: SecurityService,
+    ) {        
     }
 
     getPage(
@@ -78,16 +83,19 @@ export class ComentarioartService {
     }
 
     update(comentarioart: Partial<IComentarioart>): Observable<number> {
+        this.security.forbidClubAdminActions();
         const body = this.sanitizer.sanitize(comentarioart, { nestedIdFields: ['articulo', 'usuario'] });
         return this.oHttp.put<number>(serverURL + '/comentarioart', body);
     }
 
     create(comentarioart: Partial<IComentarioart>): Observable<number> {
+        this.security.forbidClubAdminActions();
         const body = this.sanitizer.sanitize(comentarioart, { nestedIdFields: ['articulo', 'usuario'] });
         return this.oHttp.post<number>(serverURL + '/comentarioart', body);
     }
 
     delete(id: number): Observable<number> {
+        this.security.forbidClubAdminActions();
         return this.oHttp.delete<number>(serverURL + '/comentarioart/' + id);
     }
 }
