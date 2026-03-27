@@ -110,6 +110,12 @@
                           <span>Tipo</span>
                         </div>
                       </th>
+                      <th scope="col" class="d-none d-md-table-cell" style="width: 9%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-shield" aria-hidden="true"></i></div>
+                          <span>Rol</span>
+                        </div>
+                      </th>
                       <th scope="col" class="d-none d-md-table-cell" style="width: 8%">
                         <div class="header-stacked">
                           <div class="header-top"><i class="bi bi-receipt" aria-hidden="true"></i></div>
@@ -120,6 +126,36 @@
                         <div class="header-stacked">
                           <div class="header-top"><i class="bi bi-person-badge" aria-hidden="true"></i></div>
                           <span>Jugadores</span>
+                        </div>
+                      </th>
+                      <th scope="col" class="d-none d-lg-table-cell" style="width: 7%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-people" aria-hidden="true"></i></div>
+                          <span>Eq. Entr.</span>
+                        </div>
+                      </th>
+                      <th scope="col" class="d-none d-lg-table-cell" style="width: 7%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-chat-left-text" aria-hidden="true"></i></div>
+                          <span>Comentarios</span>
+                        </div>
+                      </th>
+                      <th scope="col" class="d-none d-lg-table-cell" style="width: 7%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-star-fill" aria-hidden="true"></i></div>
+                          <span>Puntuaciones</span>
+                        </div>
+                      </th>
+                      <th scope="col" class="d-none d-lg-table-cell" style="width: 7%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-chat-square-text" aria-hidden="true"></i></div>
+                          <span>Com. Art.</span>
+                        </div>
+                      </th>
+                      <th scope="col" class="d-none d-lg-table-cell" style="width: 7%">
+                        <div class="header-stacked">
+                          <div class="header-top"><i class="bi bi-cart" aria-hidden="true"></i></div>
+                          <span>Carritos</span>
                         </div>
                       </th>
                       <th scope="col" class="text-center" style="width: 14%">
@@ -153,6 +189,14 @@
                             <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/usuario/tipousuario', oUsuario.tipousuario?.id]" role="button" title="Filtrar por tipo de usuario"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
                           }
                         </td>
+                        <td class="d-none d-md-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.rolusuario?.descripcion || '-' }}
+                          } @else {
+                            <a [routerLink]="['/rolusuario/view', oUsuario.rolusuario?.id]">{{ oUsuario.rolusuario?.descripcion || '-' }}</a>
+                            <a class="btn btn-warning btn-sm ms-2 float-end" [routerLink]="['/usuario/rol', oUsuario.rolusuario?.id]" role="button" title="Filtrar por rol"><i class="bi bi-funnel-fill" aria-hidden="true"></i></a>
+                          }
+                        </td>
                         <td class="text-center d-none d-md-table-cell">
                           @if (isDialogMode()) {
                             {{ oUsuario.facturas || 0 }}
@@ -175,6 +219,61 @@
                             }
                           }
                         </td>
+                        <td class="text-center d-none d-lg-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.equiposentrenados || 0 }}
+                          } @else {
+                            @if (!oUsuario.equiposentrenados || oUsuario.equiposentrenados === 0) {
+                              <i class="bi bi-ban" aria-hidden="true"></i>
+                            } @else {
+                              <a [routerLink]="['/equipo/usuario', oUsuario.id]">{{ oUsuario.equiposentrenados }}</a>
+                            }
+                          }
+                        </td>
+                        <td class="text-center d-none d-lg-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.comentarios || 0 }}
+                          } @else {
+                            @if (!oUsuario.comentarios || oUsuario.comentarios === 0) {
+                              <i class="bi bi-ban" aria-hidden="true"></i>
+                            } @else {
+                              <a [routerLink]="['/comentario/usuario', oUsuario.id]">{{ oUsuario.comentarios }}</a>
+                            }
+                          }
+                        </td>
+                        <td class="text-center d-none d-lg-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.puntuaciones || 0 }}
+                          } @else {
+                            @if (!oUsuario.puntuaciones || oUsuario.puntuaciones === 0) {
+                              <i class="bi bi-ban" aria-hidden="true"></i>
+                            } @else {
+                              <a [routerLink]="['/puntuacion/usuario', oUsuario.id]">{{ oUsuario.puntuaciones }}</a>
+                            }
+                          }
+                        </td>
+                        <td class="text-center d-none d-lg-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.comentarioarts || 0 }}
+                          } @else {
+                            @if (!oUsuario.comentarioarts || oUsuario.comentarioarts === 0) {
+                              <i class="bi bi-ban" aria-hidden="true"></i>
+                            } @else {
+                              <a [routerLink]="['/comentarioart/usuario', oUsuario.id]">{{ oUsuario.comentarioarts }}</a>
+                            }
+                          }
+                        </td>
+                        <td class="text-center d-none d-lg-table-cell">
+                          @if (isDialogMode()) {
+                            {{ oUsuario.carritos || 0 }}
+                          } @else {
+                            @if (!oUsuario.carritos || oUsuario.carritos === 0) {
+                              <i class="bi bi-ban" aria-hidden="true"></i>
+                            } @else {
+                              <a [routerLink]="['/carrito/usuario', oUsuario.id]">{{ oUsuario.carritos }}</a>
+                            }
+                          }
+                        </td>
                         <td class="text-center">
                           <app-botonera-actions-plist [id]="oUsuario.id" strEntity="usuario"></app-botonera-actions-plist>
                         </td>
@@ -182,7 +281,7 @@
                     }
                     @empty {
                       <tr>
-                        <td colspan="9" class="text-center text-muted py-3">No se encontraron registros</td>
+                        <td colspan="15" class="text-center text-muted py-3">No se encontraron registros</td>
                       </tr>
                     }
                   </tbody>
