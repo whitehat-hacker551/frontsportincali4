@@ -28,6 +28,11 @@ En gesportin, los perfiles y permisos se gestionan a través de roles. Cada rol 
   * Las facturas de su club (crud completo excepto borrar pero sólo de facturas de su club)
   * Los jugadores de su club (crud completo pero sólo de jugadores de su club)
   * Las cuotas que pagan los jugadores de su club (crud completo pero sólo de cuotas de su club)
+  * Los usuarios pero sólo de su club:
+    * puede ver sólo usuarios de su club
+    * puede crear usuarios del tipo usuario sólo en su club
+    * puede modificar usuarios del tipo usuario sólo de su club sin cambiar su club
+    * puede eliminar usuarios del tipo usuario sólo de su club
   * Los pagos de los jugadores de su club (crud completo pero sólo de pagos de su club)
 * Puede ver:
   * Puede ver los datos de los usuarios de su club pero no puede modificarlos ni borrarlos. No puede ver los datos de los usuarios de otros clubes.
@@ -39,31 +44,34 @@ En gesportin, los perfiles y permisos se gestionan a través de roles. Cada rol 
   * No tiene permisos de ningún tipo para gestionar nada de otros clubes.
 
 ### 3. **Usuario**
-* (tabla: tipousuario, id:3) 
+* (tabla: tipousuario, id:3 Perfil "Usuario") 
 * Puede ver:
+  * Roles de usuario
+  * Tipos de usuario
   * Los datos de su club.
   * Las temporadas de su club,
   * Las categorías de cada temporada de su club,
   * Los equipos de cada categoría de su club,
   * Las ligas en las que participan los equipos de su club,
   * Los partidos que se juegan dentro de las ligas de su club,
-  * Las cuotas que pagan los jugadores de su club,
+  * Las cuotas que pagan los jugadores de equipo en su club,
   * Las noticias de su club,
+  * La media de las puntuaciones de las noticias de su club,
   * Los tipos de articulo de su club,
   * Los artículos de su club,  
-* Puede crear y modificar sus comentarios de noticias de su club.
-* Puede crear y modificar sus puntuaciones de noticias de su club.
-* Puede crear y modificar sus comentarios de artículos de tipos de articulos de su club.
-* Puede introducir productos de su club en su carrito de la compra.
-* Puede comprar productos de su carrito de la compra. Si lo hace, se pasan los productos de su carrito a compra y se crea una factura asociada al usuario con esos productos.
+  * Sus facturas con las compras.
+  * Los datos de usuario de usuarios de su club excepto el password.
+* Puede crear y modificar: 
+  * sólo sus comentarios de las noticias de su club.
+  * sólo sus puntuaciones de sus noticias de su club.
+  * sólo sus comentarios de artículos sólo de los tipos de articulos de su club.
+* Puede introducir, borrar o modificar productos de su club en su carrito de la compra, lo que equivale a que tiene que poder escribir, borrar o modificar productos de su club en la tabla de carrito de la compra.
+* Puede comprar productos de su carrito de la compra. Para comprar se debe ejecutar el siguiente proceso:
+  1 El sistema comprueba que el usuario tiene productos en su carrito de la compra.
+  2 Si el usuario no tiene productos en su carrito de la compra, se emite una excepción  indicando que no se pueden realizar compras sin productos en el carrito.
+  3 Si el usuario tiene productos en su carrito de la compra, se procede a realizar la compra.
+    4 Se crea una nueva factura con id=x asociada al usuario en la fecha y hora actuales.
+    5 Se copian las referencias de los artículos y cantidades a la tabla compra, incluyendo el precio actual de cada artículo en el momento de la compra y se vinculan todas las líneas creadas con el id=x de la factura creada en el paso anterior.
+    6 Se borran los registros del carrito de la compra del usuario.
 * No tiene permisos para ver nada de otros clubes.
-
-
-
-## Gestión de permisos en el frontend
-
-* Cuando un tipo de usuario no puede realizar una acción no se debe mostrar el botón o enlace que permita realizar esa acción. Por ejemplo, el usuario de tipo 2 "Administrador de equipo" no debe ver el botón "Crear club" en la página de clubes, ni el botón "Borrar club" ni el boton "Modificar club".
-
-* Cuando un tipo de usuario puede realizar una acción en su club se debe mostrar el botón o enlace que permita realizar esa acción. Pero se debe impedir que pueda realizar esa acción en otros clubes. 
-  * Por ejemplo, el usuario de tipo 2 "Administrador de equipo" debe ver el botón "Crear noticia" en la página de noticias, pero sólo debe poder crear noticias de su club, no de otros clubes. Por ello en el formulario de alta o edición no debe poder elegir el club al que pertenece la noticia, sino que se le debe asignar automáticamente el club al que pertenece el usuario.
-  * Por ejemplo, el usuario de tipo 2 "Administrador de equipo" debe ver el botón "Crear artículo" en la página de artículos, pero sólo debe poder crear artículos de su club, no de otros clubes. Pero en el formulario de alta o edición no aparece el club. Entonces se debe reflexionar sobre cómo se asigna el club al artículo. El artículo se asigna a un club por medio del tipo de artículo al que pertenece el artículo. Entonces, para que el usuario de tipo 2 "Administrador de equipo" sólo pueda crear artículos de su club, se le deben mostrar sólo los tipos de artículo de su club en el formulario de alta o edición del artículo. De esta forma, el usuario de tipo 2 "Administrador de equipo" sólo podrá crear artículos de su club, no de otros clubes.
+* No tiene permisos para crear modificar o borrar fuera de lo mencionado anteriormente.
